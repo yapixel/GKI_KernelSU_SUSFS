@@ -481,8 +481,8 @@ jobs:
 
       - name: Create Kernel ZIP
         run: |
-          cp $CONFIG/common/out/arch/arm64/boot/Image" "AnyKernel3/Image"
-          cd AnyKernel3"
+          cp $CONFIG/common/out/arch/arm64/boot/Image AnyKernel3/Image
+          cd AnyKernel3
           ZIP_NAME="${{ inputs.kernelsu_variant }}-$KSUVER-${{ inputs.android_version }}-${{ inputs.kernel_version }}.${{ inputs.sub_level }}-${{ inputs.os_patch_level }}-AnyKernel3.zip"
           zip -r "../$ZIP_NAME" ./*
   
