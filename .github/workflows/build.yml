@@ -480,14 +480,10 @@ jobs:
           make -j$(nproc --all) O=out $MAKE_ARGS KCFLAGS+="-Wno-error -O2 -flto=thin -fno-stack-protector" || exit 1
 
       - name: Create Kernel ZIP
-        id: create_zip
         run: |
-          CONFIG_DIR="$GITHUB_WORKSPACE/$CONFIG"
-          KERNEL_PATH="$CONFIG_DIR"
-          cp "$KERNEL_PATH/common/out/arch/arm64/boot/Image" "$GITHUB_WORKSPACE/AnyKernel3/Image"
-          cd "$GITHUB_WORKSPACE/AnyKernel3"
+          cp $CONFIG/common/out/arch/arm64/boot/Image" "AnyKernel3/Image"
+          cd AnyKernel3"
           ZIP_NAME="${{ inputs.kernelsu_variant }}-$KSUVER-${{ inputs.android_version }}-${{ inputs.kernel_version }}.${{ inputs.sub_level }}-${{ inputs.os_patch_level }}-AnyKernel3.zip"
-          echo "Creating zip file $ZIP_NAME in $ARTIFACTS_DIR..."
           zip -r "../$ZIP_NAME" ./*
   
       - name: Upload Build Artifacts
@@ -495,4 +491,4 @@ jobs:
         with:
           name: ${{ inputs.kernelsu_variant }}-kernel-${{ env.CONFIG }}
           path: |
-            ${{ env.CONFIG }}/*.zip
+            *.zip
