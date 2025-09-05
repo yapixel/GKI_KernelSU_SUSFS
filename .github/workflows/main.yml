@@ -23,7 +23,6 @@ on:
           - Release
         default: Pre-Release
 
-
 jobs:
   build-a12-5-10:
     uses: ./.github/workflows/kernel-a12-5-10.yml
@@ -65,16 +64,14 @@ jobs:
     if: ${{ inputs.release_type == 'Release' || inputs.release_type == 'Pre-Release' }}
     runs-on: ubuntu-latest
     needs:
-      - build-a12-5-10
-      - build-a13-5-10
-      - build-a13-5-15
-      - build-a14-5-15
+      
       - build-a14-6-1
-      - build-a15-6-6
+      
     env:
       GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
       RELEASE_NAME: "GKI Kernels With WKSU & SUSFS v1.5.9"
       RELEASE_BODY:
+      
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -116,19 +113,21 @@ jobs:
           echo "WKSU_URL=$WKSU_URL" >> $GITHUB_ENV
 
       - name: Generate and Create New Tag
+        env:
+          GH_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}  # Set GH_TOKEN for gh command
         run: |
-            LATEST_TAG=$(gh api repos/${{ github.repository }}/tags --jq '.[0].name')
-            if [ -z "$LATEST_TAG" ]; then
-              LATEST_TAG="v1.5.9-r0"
-            fi
-            
-            NEW_TAG=$(echo "$LATEST_TAG" | awk -F'-r' '{suffix=$2; if (!suffix) suffix=0; suffix++; printf "%s-r%d", $1, suffix}')
-    
-            echo "New tag: $NEW_TAG"
-            echo "NEW_TAG=${NEW_TAG}" >> $GITHUB_ENV
+          LATEST_TAG=$(gh api repos/${{ github.repository }}/tags --jq '.[0].name')
+          if [ -z "$LATEST_TAG" ]; then
+            LATEST_TAG="v1.5.9-r0"
+          fi
+          
+          NEW_TAG=$(echo "$LATEST_TAG" | awk -F'-r' '{suffix=$2; if (!suffix) suffix=0; suffix++; printf "%s-r%d", $1, suffix}')
+  
+          echo "New tag: $NEW_TAG"
+          echo "NEW_TAG=${NEW_TAG}" >> $GITHUB_ENV
 
-            git tag $NEW_TAG
-            git push origin $NEW_TAG
+          git tag $NEW_TAG
+          git push origin $NEW_TAG
 
       - name: Download Artifacts
         uses: actions/download-artifact@v4
@@ -167,12 +166,9 @@ jobs:
           -> WKSU: [${{ env.WKSU_REF }}](${{ env.WKSU_URL }})
 
           -> SUSFS4KSU: 
-            -> gki-android12-5.10: [${{ env.COMMIT_HASH_gki_android12_5_10 }}](${{ env.COMMIT_URL_gki_android12_5_10 }})
-            -> gki-android13-5.10: [${{ env.COMMIT_HASH_gki_android13_5_10 }}](${{ env.COMMIT_URL_gki_android13_5_10 }})
-            -> gki-android13-5.15: [${{ env.COMMIT_HASH_gki_android13_5_15 }}](${{ env.COMMIT_URL_gki_android13_5_15 }})
-            -> gki-android14-5.15: [${{ env.COMMIT_HASH_gki_android14_5_15 }}](${{ env.COMMIT_URL_gki_android14_5_15 }})
+         
             -> gki-android14-6.1: [${{ env.COMMIT_HASH_gki_android14_6_1 }}](${{ env.COMMIT_URL_gki_android14_6_1 }})
-            -> gki-android15-6.6: [${{ env.COMMIT_HASH_gki_android15_6_6 }}](${{ env.COMMIT_URL_gki_android15_6_6 }})
+            
           EOF
 
       - name: Create GitHub Release
@@ -199,14 +195,4 @@ jobs:
           echo "GitHub release created with the following files:"
           ls ./downloaded-artifacts/**/*
             
-      - name: Send Telegram Notification
-        run: |
-          curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
-            -F chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
-            -F message_thread_id="${{ secrets.TELEGRAM_TOPIC_ID_GKI }}" \
-            -F text="
-            🌽 *New Kernel Release Uploaded*  
-            📦 *Repository:* [${{ github.repository }}](https://github.com/${{ github.repository }})  
-            ✏️ *Commit:* [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }})  
-            [🔗 View GitHub Release](https://github.com/${{ github.repository }}/releases/tag/${{ env.NEW_TAG }})" \
-            -F parse_mode="Markdown"
+      
