@@ -1,0 +1,158 @@
+name: Build Kernels A14-6-1
+
+permissions:
+  contents: write
+  actions: write
+
+on:
+  workflow_dispatch:
+    inputs:
+      use_make:
+        description: 'Build with MAKE?'
+        required: true
+        type: boolean
+        default: true
+
+      release_type:
+        description: "Choose Release Type"
+        required: true
+        type: choice
+        options:
+          - Actions
+          - Pre-Release
+          - Release
+        default: Pre-Release
+
+jobs:
+  build-a14-6-1:
+    uses: ./.github/workflows/kernel-a14-6-1.yml
+    secrets: inherit
+    with:
+      use_make: ${{ inputs.use_make }}
+
+  release:
+    if: ${{ inputs.release_type == 'Release' || inputs.release_type == 'Pre-Release' }}
+    runs-on: ubuntu-latest
+    needs:
+      - build-a14-6-1
+    env:
+      GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+      RELEASE_NAME: "GKI Kernel A14-6-1 With WKSU & SUSFS v1.5.9"
+      RELEASE_BODY:
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get commit hashes and generate commit URLs
+        run: |
+          GITLAB_OWNER="simonpunk"
+          GITLAB_REPO="susfs4ksu"
+          
+          declare -A BRANCH_MAP=(
+            ["gki_android14_6_1"]="gki-android14-6.1"
+          )
+          
+          for var_name in "${!BRANCH_MAP[@]}"; do
+            branch_name="${BRANCH_MAP[$var_name]}"
+            COMMIT_HASH=$(git ls-remote https://gitlab.com/$GITLAB_OWNER/$GITLAB_REPO.git refs/heads/$branch_name | awk '{ print $1 }')
+            
+            if [[ -n "$COMMIT_HASH" ]]; then
+              COMMIT_URL="https://gitlab.com/$GITLAB_OWNER/$GITLAB_REPO/-/commit/$COMMIT_HASH"
+              echo "$branch_name Commit: $COMMIT_HASH"
+              echo "$branch_name Commit URL: $COMMIT_URL"
+              
+              echo "COMMIT_HASH_${var_name}=$COMMIT_HASH" >> "$GITHUB_ENV"
+              echo "COMMIT_URL_${var_name}=$COMMIT_URL" >> "$GITHUB_ENV"
+            fi
+          done
+
+      - name: Get KernelSU variant refs and links
+        run: |
+          # Get WKSU latest commit from wild branch
+          WKSU_REF=$(git ls-remote "https://github.com/WildKernels/Wild_KSU.git" refs/heads/wild | awk '{print $1}')
+          WKSU_URL="https://github.com/WildKernels/Wild_KSU/commit/$WKSU_REF"
+          echo "WKSU_REF=$WKSU_REF" >> $GITHUB_ENV
+          echo "WKSU_URL=$WKSU_URL" >> $GITHUB_ENV
+
+      - name: Generate and Create New Tag
+        env:
+          GH_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}  # Set GH_TOKEN for gh command
+        run: |
+          LATEST_TAG=$(gh api repos/${{ github.repository }}/tags --jq '.[0].name')
+          if [ -z "$LATEST_TAG" ]; then
+            LATEST_TAG="v1.5.9-r0"
+          fi
+          
+          NEW_TAG=$(echo "$LATEST_TAG" | awk -F'-r' '{suffix=$2; if (!suffix) suffix=0; suffix++; printf "%s-r%d", $1, suffix}')
+  
+          echo "New tag: $NEW_TAG"
+          echo "NEW_TAG=${NEW_TAG}" >> $GITHUB_ENV
+
+          git tag $NEW_TAG
+          git push origin $NEW_TAG
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./downloaded-artifacts
+
+      - name: Set release body
+        run: |
+          cat << 'EOF' > release_body.md
+      
+          Features:
+          -> Wild KSU
+          -> Multi Manager Support for WKSU Manager & KernelSU-Next Manager (Only Install One)
+          -> SUSFS ඞ v1.5.9
+          -> Scope-Minimized Manual hooks v1.4
+          -> Magic Mount Support
+          -> Simple Maphide for LineageOS Detections
+          -> Futile Maphide for jit-zygote-cache Detections
+          -> Ptrace Patch Support for Older Kernels (<5.16)
+          -> IPSet Support for Advanced Network Filtering
+          -> Wireguard Support
+          -> BBR Support
+      
+          Notes:
+          -> SUS SU Mode 2 will show as disabled or not compatible due to non-kprobe hooks and is not needed anymore!
+          -> Official Kernel Flasher is broken with latest susfs, try https://github.com/fatalcoder524/KernelFlasher/
+      
+          Module: 
+          -> https://github.com/sidex15/ksu_module_susfs
+      
+          Managers:
+          -> WKSU: https://github.com/WildKernels/Wild_KSU
+
+      
+          Commit Hashes (at the time of release):
+          -> WKSU: [${{ env.WKSU_REF }}](${{ env.WKSU_URL }})
+
+          -> SUSFS4KSU: 
+            -> gki-android14-6.1: [${{ env.COMMIT_HASH_gki_android14_6_1 }}](${{ env.COMMIT_URL_gki_android14_6_1 }})
+          EOF
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.NEW_TAG }}
+          prerelease: ${{ inputs.release_type == 'Pre-Release' }}
+          files: ""
+          name: ${{ env.RELEASE_NAME }}
+          body_path: release_body.md
+
+      - name: Upload Release Assets
+        run: |
+          for file in ./downloaded-artifacts/*-kernel-*/*; do
+            if [ -d "$file" ]; then
+              continue
+            fi
+            echo "Uploading $file..."
+            gh release upload ${{ env.NEW_TAG }} "$file"
+          done
+
+      - name: Display Files Uploaded
+        run: |
+          echo "GitHub release created with the following files:"
+          ls ./downloaded-artifacts/**/*
+            
+     
