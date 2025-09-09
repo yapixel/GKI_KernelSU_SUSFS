@@ -246,9 +246,10 @@ jobs:
           echo "CONFIG_TCP_CONG_WESTWOOD=n" >> "$defconfig"
           echo "CONFIG_TCP_CONG_HTCP=n" >> "$defconfig"
           
-          # IPSet support
+
+          #IPSet support
           echo "CONFIG_IP_SET=y" >> "$defconfig"
-          echo "CONFIG_IP_SET_MAX=256" >> "$defconfig"
+          echo "CONFIG_IP_SET_MAX=512" >> "$defconfig"
           echo "CONFIG_IP_SET_BITMAP_IP=y" >> "$defconfig"
           echo "CONFIG_IP_SET_BITMAP_IPMAC=y" >> "$defconfig"
           echo "CONFIG_IP_SET_BITMAP_PORT=y" >> "$defconfig"
@@ -259,8 +260,11 @@ jobs:
           echo "CONFIG_IP_SET_HASH_NET=y" >> "$defconfig"
           echo "CONFIG_IP_SET_HASH_NETNET=y" >> "$defconfig"
           echo "CONFIG_IP_SET_HASH_NETPORT=y" >> "$defconfig"
-          echo "CONFIG_IP_SET_HASH_NETIFACE=y" >> "$defconfig"
+          echo "CONFIG_IP_SET_HASH_NETIFACE=y" >> "$defconfig"  
+          echo "CONFIG_IP_SET_HASH_MAC=y" >> "$defconfig"       
+          echo "CONFIG_IP_SET_LIST_SET=y" >> "$defconfig"      
           echo "CONFIG_NETFILTER_XT_MATCH_SET=y" >> "$defconfig"
+          
           # SUSFS Configuration
           echo "CONFIG_KSU_SUSFS=y" >> "$defconfig"
           echo "CONFIG_KSU_SUSFS_HAS_MAGIC_MOUNT=y" >> "$defconfig"
