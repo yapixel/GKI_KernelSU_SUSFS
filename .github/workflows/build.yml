@@ -78,7 +78,7 @@ jobs:
           SUSFS_BRANCH="gki-${{ inputs.android_version }}-${{ inputs.kernel_version }}"
           
           git clone https://github.com/WildKernels/AnyKernel3.git -b "$ANYKERNEL_BRANCH"
-          git clone https://gitlab.com/simonpunk/susfs4ksu.git -b "$SUSFS_BRANCH"
+          git clone https://github.com/yapixel/susfs4ksu -b "$SUSFS_BRANCH"
           git clone https://github.com/WildKernels/kernel_patches.git
 
       - name: Initialize and Sync Kernel Source
