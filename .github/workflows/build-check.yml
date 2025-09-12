@@ -14,29 +14,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # Android 12 - Kernel 5.10 LTS
-          - android_version: "android12"
-            kernel_version: "5.10"
-            sub_level: "X"
-            os_patch_level: "lts"
           
-          # Android 13 - Kernel 5.10 LTS
-          - android_version: "android13"
-            kernel_version: "5.10"
-            sub_level: "X"
-            os_patch_level: "lts"
-          
-          # Android 13 - Kernel 5.15 LTS
-          - android_version: "android13"
-            kernel_version: "5.15"
-            sub_level: "X"
-            os_patch_level: "lts"
-          
-          # Android 14 - Kernel 5.15 LTS
-          - android_version: "android14"
-            kernel_version: "5.15"
-            sub_level: "X"
-            os_patch_level: "lts"
           
           # Android 14 - Kernel 6.1 LTS
           - android_version: "android14"
@@ -44,11 +22,7 @@ jobs:
             sub_level: "X"
             os_patch_level: "lts"
           
-          # Android 15 - Kernel 6.6 LTS
-          - android_version: "android15"
-            kernel_version: "6.6"
-            sub_level: "X"
-            os_patch_level: "lts"
+         
 
     name: Build Check
     uses: ./.github/workflows/build.yml
