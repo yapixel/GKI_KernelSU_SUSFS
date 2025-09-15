@@ -91,7 +91,8 @@ jobs:
           git clone https://github.com/WildKernels/kernel_patches.git
 
           cd susfs4ksu
-          git reset --hard a26ba8380e1d10b2169b8148967c4f5108c2a3f7
+          #git reset --hard a26ba8380e1d10b2169b8148967c4f5108c2a3f7
+          git reset --hard 2413de900c8e34d46dee859996b5364ba3ef8896
 
           cd -
 
