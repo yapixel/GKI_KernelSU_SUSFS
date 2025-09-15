@@ -188,11 +188,11 @@ jobs:
           KSU_VERSION=$(expr $COMMIT_COUNT "+" $BASE_VERSION)
           echo "KSUVER=$KSU_VERSION" >> $GITHUB_ENV
           
-      - name: Apply Hooks Patches
-        run: |
-          cd "$CONFIG/common"
-          cp ../../kernel_patches/wild/hooks/scope_min_manual_hooks_v1.4.patch ./
-          patch -p1 --forward -F 3 < scope_min_manual_hooks_v1.4.patch
+    #  - name: Apply Hooks Patches
+    #    run: |
+    #      cd "$CONFIG/common"
+    #      cp ../../kernel_patches/wild/hooks/scope_min_manual_hooks_v1.4.patch ./
+    #      patch -p1 --forward -F 3 < scope_min_manual_hooks_v1.4.patch
 
       - name: Apply Hide Stuff Patches
         run: |
