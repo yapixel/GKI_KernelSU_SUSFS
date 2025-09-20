@@ -156,7 +156,8 @@ jobs:
       - name: Add KernelSU
         run: |
           cd "$CONFIG"
-          curl -LSs "https://raw.githubusercontent.com/5ec1cff/KernelSU/main/kernel/setup.sh" | bash -s main
+          #curl -LSs "https://raw.githubusercontent.com/5ec1cff/KernelSU/main/kernel/setup.sh" | bash -s main
+          curl -LSs "https://raw.githubusercontent.com/backslashxx/KernelSU/master/kernel/setup.sh" | bash -s master
           
       - name: Apply SUSFS Patches for KernelSU Variants
         run: |
