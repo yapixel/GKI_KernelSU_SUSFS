@@ -156,7 +156,7 @@ jobs:
       - name: Add KernelSU
         run: |
           cd "$CONFIG"
-          curl -LSs "https://raw.githubusercontent.com/5ec1cff/KernelSU/main/kernel/setup.sh" | bash -s main
+          curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/main/kernel/setup.sh" | bash -s susfs-main
           
       - name: Apply SUSFS Patches for KernelSU Variants
         run: |
@@ -172,9 +172,12 @@ jobs:
           
           # Apply KSU integration patches
           cd ./KernelSU
-          cp ../../susfs4ksu/kernel_patches/KernelSU/10_enable_susfs_for_ksu.patch .
-          patch -p1 --forward < 10_enable_susfs_for_ksu.patch || true
-
+          #cp ../../susfs4ksu/kernel_patches/KernelSU/10_enable_susfs_for_ksu.patch .
+          #patch -p1 --forward < 10_enable_susfs_for_ksu.patch || true
+          
+          #cp ../../kernel_patches/sultan/sys.c_fix.patch ./
+          #patch -p1 --fuzz=3 < sys.c_fix.patch   
+          
           cp ../../kernel_patches/mksu/fix_core_hook.c.patch ./
           patch -p1 --forward < fix_core_hook.c.patch
           
@@ -574,7 +577,7 @@ jobs:
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: MKSU-${{ env.KSUVER }}-${{ inputs.android_version }}-${{ inputs.kernel_version }}.${{ env.ACTUAL_SUBLEVEL || inputs.sub_level }}-${{ inputs.os_patch_level }}-${{ matrix.build_type }}
+          name: SukiSU-${{ env.KSUVER }}-${{ inputs.android_version }}-${{ inputs.kernel_version }}.${{ env.ACTUAL_SUBLEVEL || inputs.sub_level }}-${{ inputs.os_patch_level }}-${{ matrix.build_type }}
           path: |
             *.zip
             *.img
