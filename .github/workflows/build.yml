@@ -170,10 +170,7 @@ jobs:
           cp ../susfs4ksu/kernel_patches/fs/* ./common/fs/
           cp ../susfs4ksu/kernel_patches/include/linux/* ./common/include/linux/
           
-          # Apply KSU integration patches
-          cd ./KernelSU
-          cp ../../SukiSU_patch/hooks/scope_min_manual_hooks_v1.5.patch ./
-          patch -p1 --forward < scope_min_manual_hooks_v1.5.patch || true
+          
           
           #cp ../../kernel_patches/sultan/sys.c_fix.patch ./
           #patch -p1 --fuzz=3 < sys.c_fix.patch   
@@ -194,8 +191,8 @@ jobs:
       - name: Apply Hooks Patches
         run: |
           cd "$CONFIG/common"
-          cp ../../kernel_patches/wild/hooks/scope_min_manual_hooks_v1.4.patch ./
-          patch -p1 --forward -F 3 < scope_min_manual_hooks_v1.4.patch
+          cp ../../SukiSU_patch/hooks/scope_min_manual_hooks_v1.5.patch ./
+          patch -p1 --forward -F 3 < scope_min_manual_hooks_v1.5.patch
 
       - name: Apply Hide Stuff Patches
         run: |
