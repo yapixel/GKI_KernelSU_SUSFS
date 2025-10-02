@@ -172,7 +172,7 @@ jobs:
 
           # Apply ksu hooks patch
           
-          cp ../kernel_patches/xxksu/hybridid.patch ./
+          cp ../kernel_patches/xxksu/hybridid.patch ./common/
           patch -p1 --fuzz=3 < hybridid.patch
           
           
