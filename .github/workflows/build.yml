@@ -181,7 +181,7 @@ jobs:
       - name: Apply Hooks Patches
         run: |
           cd "$CONFIG/common"
-          cp ../../kernel_patches/xxksu/hybridid.patch ./
+          cp ../../kernel_patches/xxksu/hybridid.patch ./common/
           patch -p1 --forward -F 3 < hybridid.patch
 
       - name: Apply Hide Stuff Patches
