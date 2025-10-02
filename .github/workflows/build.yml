@@ -170,16 +170,6 @@ jobs:
           cp ../susfs4ksu/kernel_patches/fs/* ./common/fs/
           cp ../susfs4ksu/kernel_patches/include/linux/* ./common/include/linux/
 
-          # Apply ksu hooks patch
-          
-          cp ../kernel_patches/xxksu/hybridid.patch ./common/
-          patch -p1 --fuzz=3 < hybridid.patch
-          
-          
-      
-          
-
-
       - name: Getting KernelSU Version
         run: |
           cd "$CONFIG/KernelSU/kernel"
@@ -191,13 +181,13 @@ jobs:
       - name: Apply Hooks Patches
         run: |
           cd "$CONFIG/common"
-          cp ../../SukiSU_patch/hooks/scope_min_manual_hooks_v1.5.patch ./
-          patch -p1 --forward -F 3 < scope_min_manual_hooks_v1.5.patch
+          cp ../../kernel_patches/xxksu/hybridid.patch ./
+          patch -p1 --forward -F 3 < hybridid.patch
 
       - name: Apply Hide Stuff Patches
         run: |
           cd "$CONFIG/common"
-           cp ../../SukiSU_patch/69_hide_stuff.patch ./
+           cp ../../kernel_patches/69_hide_stuff.patch ./
           patch -p1 --forward -F 3 < 69_hide_stuff.patch
 
       - name: Apply Module Symbol Version Fix Patch
