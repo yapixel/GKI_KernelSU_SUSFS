@@ -171,8 +171,8 @@ jobs:
           cp ../susfs4ksu/kernel_patches/include/linux/* ./common/include/linux/
 
           # Apply ksu hooks patch
-          cd ./KernelSU
-          cp ../../kernel_patches/xxksu/hybridid.patch ./
+          
+          cp ../kernel_patches/xxksu/hybridid.patch ./
           patch -p1 --fuzz=3 < hybridid.patch
           
           
