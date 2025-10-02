@@ -564,7 +564,7 @@ jobs:
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: SukiSU-${{ env.KSUVER }}-${{ inputs.android_version }}-${{ inputs.kernel_version }}.${{ env.ACTUAL_SUBLEVEL || inputs.sub_level }}-${{ inputs.os_patch_level }}-${{ matrix.build_type }}
+          name: xxKSU-${{ env.KSUVER }}-${{ inputs.android_version }}-${{ inputs.kernel_version }}.${{ env.ACTUAL_SUBLEVEL || inputs.sub_level }}-${{ inputs.os_patch_level }}-${{ matrix.build_type }}
           path: |
             *.zip
             *.img
