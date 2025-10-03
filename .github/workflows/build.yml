@@ -170,6 +170,12 @@ jobs:
           cp ../susfs4ksu/kernel_patches/fs/* ./common/fs/
           cp ../susfs4ksu/kernel_patches/include/linux/* ./common/include/linux/
 
+          # Apply KSU integration patches
+          cd ./KernelSU
+          cp ../../susfs4ksu/kernel_patches/KernelSU/10_enable_susfs_for_ksu.patch .
+          patch -p1 --forward < 10_enable_susfs_for_ksu.patch || true
+          
+
       - name: Getting KernelSU Version
         run: |
           cd "$CONFIG/KernelSU/kernel"
