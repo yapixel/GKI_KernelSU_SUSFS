@@ -241,6 +241,7 @@ jobs:
           # KernelSU Core Configuration
           echo "CONFIG_KSU=y" >> "$defconfig"
           echo "CONFIG_KSU_KPROBES_HOOK=y" >> "$defconfig"
+          echo "CONFIG_KSU_LSM_SECURITY_HOOKS=n" >> "$defconfig"
           
           # Mountify Support
           echo "CONFIG_TMPFS_XATTR=y" >> "$defconfig"
