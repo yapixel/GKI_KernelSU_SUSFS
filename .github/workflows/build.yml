@@ -174,10 +174,10 @@ jobs:
       - name: Apply SUSFS Patches for KernelSU Variants
         run: |
           cd "$CONFIG"
-          cp ../kernel_patches/xxksu/10_enable_susfs_for_ksu.patch ./kernelSU/
+          cp ../kernel_patches/xxksu/10_susfs_backslashxx_ksu_patches.patch ./kernelSU/
           # Apply KSU integration patches
           cd ./KernelSU
-          patch -p1 --forward < 10_enable_susfs_for_ksu.patch || true
+          patch -p1 --forward < 10_susfs_backslashxx_ksu_patches.patch || true
           
 
       - name: Getting KernelSU Version
