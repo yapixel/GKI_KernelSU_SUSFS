@@ -171,8 +171,8 @@ jobs:
           cp ../susfs4ksu/kernel_patches/include/linux/* ./common/include/linux/
           
           # Apply KSU integration patches
-          cp ../kernel_patches/xxksu/10_susfs_backslashxx_ksu_patches.patch ./common/kernelSU/
-          cd ./common/kernelSU
+          cp ../kernel_patches/xxksu/10_susfs_backslashxx_ksu_patches.patch ./common/KernelSU/
+          cd ./common/KernelSU
           patch -p1 --forward < 10_susfs_backslashxx_ksu_patches.patch || true
           
 
