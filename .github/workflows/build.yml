@@ -175,7 +175,7 @@ jobs:
           cp ../../kernel_patches/xxksu/10_susfs_backslashxx_ksu_patches.patch ./
           patch -p1 --forward < 10_susfs_backslashxx_ksu_patches.patch || true
 
-          cp ../../kernel_patches/next/susfs_fix_patches/v1.5.11/fix_sucompat.c.patch ./
+          cp ../../kernel_patches/next/susfs_fix_patches/v1.5.10/fix_sucompat.c.patch ./
           patch -p1 --forward < fix_sucompat.c.patch
           
 
