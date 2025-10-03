@@ -174,9 +174,9 @@ jobs:
       - name: Apply SUSFS Patches for KernelSU Variants
         run: |
           cd "$CONFIG"
-          cp ../kernel_patches/xxksu/10_susfs_backslashxx_ksu_patches.patch ./kernelSU/
+          cp ../kernel_patches/xxksu/10_susfs_backslashxx_ksu_patches.patch ./common
           # Apply KSU integration patches
-          cd ./KernelSU
+          cd common
           patch -p1 --forward < 10_susfs_backslashxx_ksu_patches.patch || true
           
 
