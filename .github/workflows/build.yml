@@ -90,9 +90,7 @@ jobs:
           git clone https://gitlab.com/pershoot/susfs4ksu.git -b "$SUSFS_BRANCH"
           git clone https://github.com/yapixel/kernel_patches.git
 
-          cd susfs4ksu
-          git reset --hard 0e19a05277d28182c7b653580117145c53e69e92
-          cd ../
+        
 
       - name: Initialize and Sync Kernel Source
         run: |
@@ -177,10 +175,7 @@ jobs:
           # Apply KSU integration patches
           cd ./KernelSU
           cp ../../kernel_patches/xxksu/10_susfs_backslashxx_ksu_patches.patch ./
-          patch -p1 --forward < 10_susfs_backslashxx_ksu_patches.patch || true
-
-          cp ../../kernel_patches/next/susfs_fix_patches/v1.5.10/fix_sucompat.c.patch ./
-          patch -p1 --forward < fix_sucompat.c.patch
+          patch -p1 --forward < 10_susfs_backslashxx_ksu_patches.patch
           
 
       - name: Getting KernelSU Version
