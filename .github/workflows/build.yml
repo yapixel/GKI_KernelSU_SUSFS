@@ -90,6 +90,11 @@ jobs:
           git clone https://gitlab.com/simonpunk/susfs4ksu.git -b "$SUSFS_BRANCH"
           git clone https://github.com/WildKernels/kernel_patches.git
 
+          cd susfs4ksu 
+          git reset --hard a26ba8380e1d10b2169b8148967c4f5108c2a3f7
+          #git reset --hard 0e19a05277d28182c7b653580117145c53e69e92
+          cd ..
+
       - name: Initialize and Sync Kernel Source
         run: |
           mkdir -p "$CONFIG"
@@ -156,7 +161,8 @@ jobs:
       - name: Add KernelSU
         run: |
           cd "$CONFIG"
-          curl -LSs "https://raw.githubusercontent.com/5ec1cff/KernelSU/main/kernel/setup.sh" | bash -s main
+          curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/susfs-main/kernel/setup.sh" | bash -s 8650a9ad57521953f5be48bf4742eb08e1a8af07
+          
           
       - name: Apply SUSFS Patches for KernelSU Variants
         run: |
@@ -171,12 +177,12 @@ jobs:
           cp ../susfs4ksu/kernel_patches/include/linux/* ./common/include/linux/
           
           # Apply KSU integration patches
-          cd ./KernelSU
-          cp ../../susfs4ksu/kernel_patches/KernelSU/10_enable_susfs_for_ksu.patch .
-          patch -p1 --forward < 10_enable_susfs_for_ksu.patch || true
+          #cd ./KernelSU
+          #cp ../../susfs4ksu/kernel_patches/KernelSU/10_enable_susfs_for_ksu.patch .
+          #patch -p1 --forward < 10_enable_susfs_for_ksu.patch || true
 
-          cp ../../kernel_patches/mksu/fix_core_hook.c.patch ./
-          patch -p1 --forward < fix_core_hook.c.patch
+          #cp ../../kernel_patches/mksu/fix_core_hook.c.patch ./
+          #patch -p1 --forward < fix_core_hook.c.patch
           
 
 
