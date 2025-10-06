@@ -89,6 +89,7 @@ jobs:
           git clone https://github.com/WildKernels/AnyKernel3.git -b "$ANYKERNEL_BRANCH"
           git clone https://gitlab.com/simonpunk/susfs4ksu.git -b "$SUSFS_BRANCH"
           git clone https://github.com/WildKernels/kernel_patches.git
+          git clone https://github.com/SukiSU-Ultra/SukiSU_patch.git
 
           cd susfs4ksu 
           git reset --hard a26ba8380e1d10b2169b8148967c4f5108c2a3f7
@@ -121,8 +122,7 @@ jobs:
             ACTUAL_SUBLEVEL=$(grep '^SUBLEVEL = ' Makefile | awk '{print $3}')
             
             if [ -n "$ACTUAL_SUBLEVEL" ]; then
-              OLD_CONFIG="$CONFIG"
-              NEW_CONFIG="${{ inputs.android_version }}-${{ inputs.kernel_version }}-$ACTUAL_SUBLEVEL"
+              OLD_CONFIG="$C   NEW_CONFIG="${{ inputs.android_version }}-${{ inputs.kernel_version }}-$ACTUAL_SUBLEVEL"
               
               echo "CONFIG=$NEW_CONFIG" >> $GITHUB_ENV
               echo "ACTUAL_SUBLEVEL=$ACTUAL_SUBLEVEL" >> $GITHUB_ENV
@@ -177,8 +177,8 @@ jobs:
           cp ../susfs4ksu/kernel_patches/include/linux/* ./common/include/linux/
           
           # Apply KSU integration patches
-          cd ./KernelSU
-          cp ../../susfs4ksu/kernel_patches/KernelSU/10_enable_susfs_for_ksu.patch .
+          #cd ./KernelSU
+          #cp ../../susfs4ksu/kernel_patches/KernelSU/10_enable_susfs_for_ksu.patch .
           patch -p1 --forward < 10_enable_susfs_for_ksu.patch || true
 
           #cp ../../kernel_patches/mksu/fix_core_hook.c.patch ./
@@ -194,11 +194,11 @@ jobs:
           KSU_VERSION=$(expr $COMMIT_COUNT "+" $BASE_VERSION)
           echo "KSUVER=$KSU_VERSION" >> $GITHUB_ENV
           
-    #  - name: Apply Hooks Patches
-    #    run: |
-    #      cd "$CONFIG/common"
-    #      cp ../../kernel_patches/wild/hooks/scope_min_manual_hooks_v1.4.patch ./
-    #      patch -p1 --forward -F 3 < scope_min_manual_hooks_v1.4.patch
+      - name: Apply Hooks Patches
+        run: |
+          cd "$CONFIG/common"
+          cp ../../SukiSU_patch/hooks/scope_min_manual_hooks_v1.5.patch ./
+          patch -p1 --forward -F 3 < scope_min_manual_hooks_v1.5.patch
 
       - name: Apply Hide Stuff Patches
         run: |
