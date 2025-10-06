@@ -91,10 +91,10 @@ jobs:
           git clone https://github.com/WildKernels/kernel_patches.git
           git clone https://github.com/SukiSU-Ultra/SukiSU_patch.git
 
-          cd susfs4ksu 
-          git reset --hard a26ba8380e1d10b2169b8148967c4f5108c2a3f7
+          #cd susfs4ksu 
+          #git reset --hard a26ba8380e1d10b2169b8148967c4f5108c2a3f7
           #git reset --hard 0e19a05277d28182c7b653580117145c53e69e92
-          cd ..
+          #cd ..
 
       - name: Initialize and Sync Kernel Source
         run: |
@@ -161,7 +161,7 @@ jobs:
       - name: Add KernelSU
         run: |
           cd "$CONFIG"
-          curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/susfs-main/kernel/setup.sh" | bash -s 8650a9ad57521953f5be48bf4742eb08e1a8af07
+          curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/susfs-main/kernel/setup.sh" | bash -s susfs-main
           
           
       - name: Apply SUSFS Patches for KernelSU Variants
