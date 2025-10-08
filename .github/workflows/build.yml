@@ -161,7 +161,7 @@ jobs:
       - name: Add KernelSU
         run: |
           cd "$CONFIG"
-          curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/susfs-main/kernel/setup.sh" | bash -s susfs-main
+          curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/main/kernel/setup.sh" | bash -s susfs-main
           
           
       - name: Apply SUSFS Patches for KernelSU Variants
@@ -197,8 +197,9 @@ jobs:
       - name: Apply Hooks Patches
         run: |
           cd "$CONFIG/common"
-          cp ../../SukiSU_patch/hooks/scope_min_manual_hooks_v1.5.patch ./
-          patch -p1 --forward -F 3 < scope_min_manual_hooks_v1.5.patch
+          cp ../../SukiSU_patch/hooks/syscall_hooks.patch ./
+          patch -p1 --forward -F 3 < syscall_hooks.patch
+          
 
       - name: Apply Hide Stuff Patches
         run: |
