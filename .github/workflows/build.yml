@@ -90,6 +90,11 @@ jobs:
           git clone https://gitlab.com/simonpunk/susfs4ksu.git -b "$SUSFS_BRANCH"
           git clone https://github.com/WildKernels/kernel_patches.git
 
+          cd susfs4ksu 
+          git checkout 4755247378fb20052bffeef2118359ba7d211287
+          
+          cd ..
+
       - name: Initialize and Sync Kernel Source
         run: |
           mkdir -p "$CONFIG"
