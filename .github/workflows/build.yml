@@ -84,7 +84,7 @@ jobs:
       - name: Clone AnyKernel3 and Other Dependencies
         run: |
           ANYKERNEL_BRANCH="gki-2.0"
-          SUSFS_BRANCH="gki-${{ inputs.android_version }}-${{ inputs.kernel_version }}"-dev
+          SUSFS_BRANCH="gki-${{ inputs.android_version }}-${{ inputs.kernel_version }}"
           
           git clone https://github.com/WildKernels/AnyKernel3.git -b "$ANYKERNEL_BRANCH"
           git clone https://gitlab.com/simonpunk/susfs4ksu.git -b "$SUSFS_BRANCH"
