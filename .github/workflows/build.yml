@@ -91,10 +91,10 @@ jobs:
           git clone https://github.com/WildKernels/kernel_patches.git
           git clone https://github.com/SukiSU-Ultra/SukiSU_patch.git
 
-          #cd susfs4ksu 
+          cd susfs4ksu 
           #git checkout 4755247378fb20052bffeef2118359ba7d211287
-          #git reset --hard 0e19a05277d28182c7b653580117145c53e69e92
-          #cd ..
+          git checkout f16560ce8263fbfa9b2f259e9531f72d6fda4e3f
+          cd ..
 
       - name: Initialize and Sync Kernel Source
         run: |
